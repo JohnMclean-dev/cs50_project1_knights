@@ -16,7 +16,7 @@ knowledge0 = And(
     Or(AKnight, AKnave),                            # must be a knight or a knave
     
     Not(And(AKnight, AKnave)),                      # the statement must be a lie, it can't be both
-    
+
     Implication(AKnight, And(AKnight, AKnave)),     # the knight would tell the truth about the statement
     Implication(AKnave, Not(And(AKnight, AKnave)))  # the knave would like about the statement
 )
@@ -40,7 +40,16 @@ knowledge1 = And(
 # B says "We are of different kinds."
 
 knowledge2 = And(
-    # TODO
+    # players are either knights or knaves, not both
+    Or(AKnight, AKnave),
+    Or(BKnight, BKnave),
+    Not(And(AKnight, AKnave)),
+    Not(And(BKnight, BKnave)),
+    
+    # statement A possibilities
+    Or(And(AKnight, BKnight), And(AKnave, BKnight)),
+    #statement B possibilities
+    Or(And(AKnave, BKnight), And(AKnave, BKnave))
 )
 
 # Puzzle 3
@@ -48,10 +57,23 @@ knowledge2 = And(
 # B says "A said 'I am a knave'."
 # B says "C is a knave."
 # C says "A is a knight."
-knowledge3 = And(
-    # TODO
-)
 
+knowledge3 = And(
+    # players are either knights or knaves, not both
+    Or(AKnight, AKnave),
+    Or(BKnight, BKnave),
+    Or(CKnight, CKnave),
+    Not(And(AKnight, AKnave)),
+    Not(And(BKnight, BKnave)),
+    Not(And(CKnight, CKnave)),
+
+    # Bs first statement, assume true
+    And(BKnight, Not(Implication(AKnave, BKnave))),
+    # Bs second statement, assume true
+    And(BKnight, Implication(BKnight, CKnave)),
+    # Cs statement, assume true
+    Implication(CKnight, AKnight)
+)
 
 def main():
     symbols = [AKnight, AKnave, BKnight, BKnave, CKnight, CKnave]
